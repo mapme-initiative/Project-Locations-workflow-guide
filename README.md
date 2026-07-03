@@ -1,5 +1,7 @@
 # Project Locations Update — Workflow Guide
 
+(For testing purposes only)
+
 Interactive guide for the **Project Locations management workflow**: collecting project locations in the PLM, validating, uploading to ODP, aggregating, and publishing the portfolio map.
 
 **Documentation site:** _Enable GitHub Pages (see below) and add the URL here._
