@@ -1,0 +1,81 @@
+site_name: Project Locations management workflow
+site_description: Guide for updating project locations at KfW — from PLM collection to ODP portfolio map
+site_url: ""  # Set after GitHub Pages is enabled, e.g. https://org.github.io/Project-Locations-update/
+repo_url: ""  # Set to your GitHub repository URL
+
+exclude_docs: |
+  includes/*
+  steps/_template.md
+
+theme:
+  name: material
+  custom_dir: docs/overrides
+  language: en
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+    - toc.integrate
+
+extra:
+  version: "2026-v0"
+  generator: false
+
+nav:
+  - Overview: index.md
+  - Updating existing data: updating-existing-data.md
+  - Steps:
+    - "1 Collect": steps/01-collect.md
+    - "2 Validate": steps/02-validate.md
+    - "3 Visual plausibility check": steps/03-visual-plausibility-check.md
+    - "4 Upload data": steps/04-upload-data.md
+    - "5 Aggregate data": steps/05-aggregate-data.md
+    - "6 Create map": steps/06-create-map.md
+  - For authors: creating-the-workflow-guide.md
+  - Glossary: glossary.md
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets:
+      base_path: docs
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/glossary.css
+
+extra_javascript:
+  - javascripts/glossary.js
+  - javascripts/workflow-sidebar.js

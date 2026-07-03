@@ -1,0 +1,276 @@
+# Project Locations management workflow
+# Source: 2026-Project-Location-management-workflow-v0.pptx
+#
+# Colour encoding (slide 1 legend → slide 2 workflow boxes):
+#   - Outline colour = who performs the step
+#   - Fill colour    = who develops & maintains the tool / platform / model
+#
+# Slide 1 legend (note: section headings and colour encoding differ):
+#   - Outline swatches (under "Who develops & maintains") = performers
+#   - Fill swatches (under "Who performs")                  = maintainers
+# On the workflow diagram (slide 2), outline and fill carry the same meaning.
+
+title: Project Locations management workflow
+version: "2026-v0"
+source: 2026-Project-Location-management-workflow-v0.pptx
+
+legend:
+  performer:
+    description: Who performs the specific step in the Project Locations update workflow
+    # Outline-coloured swatches on slide 1; outline on workflow boxes (slide 2)
+    roles:
+      - id: pia_external_consultant
+        label: PIA / external consultant
+        color_hex: "A02B93"
+        color_scheme: accent5
+
+      - id: idv_geodata_desk
+        label: IDV (Geodata-Desk)
+        color_hex: "0070C0"
+        color_scheme: null
+
+      - id: kfw_operations
+        label: KfW operations (PM / PA)
+        color_hex: "00B050"
+        color_scheme: null
+
+  maintainer:
+    description: >
+      Who develops & maintains the data model / tool / platform needed
+      for the specific step. Specific responsibilities vary by team.
+    # Fill-coloured swatches on slide 1; fill on workflow boxes (slide 2)
+    roles:
+      - id: zdv_team_dai
+        label: ZDV (Team DAI)
+        color_hex: "0E2841"
+        color_scheme: tx2
+
+      - id: idv_geodata_desk
+        label: IDV (Geodata-Desk)
+        color_hex: "0070C0"
+        color_scheme: null
+
+steps:
+  - id: collect
+    order: 1
+    title: Collect
+    tool:
+      name: Project Locations Model
+      short_name: PLM
+      version: v4
+    description: Collect project-level location data using the Project Locations Model
+    performer:
+      role_id: pia_external_consultant
+      color_hex: "A02B93"
+      color_scheme: accent5
+    maintainer:
+      role_id: idv_geodata_desk
+      color_hex: "0070C0"
+      color_scheme: null
+    inputs:
+      - label: Project-level locations (multi-geometry)
+        formats:
+          - Excel
+          - GeoJSON
+    outputs:
+      - label: Project-level locations (multi-geometry)
+        formats:
+          - Excel
+          - GeoJSON
+    paths:
+      - id: points_based
+        title: Points-based Project Locations
+        required:
+          - Project Locations Model (PLM) with point coordinates filled
+          - XLSX with Latitude and Longitude columns
+        output_format: GeoJSON
+        tutorial:
+          label: Tutorial
+          url: null  # referenced on slide 4; URL not embedded in deck
+      - id: geometry_based
+        title: Geometry-based Project Locations
+        required:
+          - Project Locations Model (PLM) joined to GeoJSON geometry file
+          - At least 1 common column of data in both files (XLSX + GeoJSON)
+        tutorial:
+          label: Create GeoJSONs from QGIS (in-repo PDF)
+          url: tutorial-QGIS-create-GeoJSONs-v0.pdf
+    links:
+      - label: Project Locations Model (PLM) - v4
+        url: https://mapme-initiative.github.io/project_location_model/annex1.html
+      - label: MapMe collection guidance (polygons/lines)
+        url: https://mapme-initiative.github.io/project_location_model/collection.html
+      - label: QGIS GeoJSON tutorial (PDF in repository)
+        url: tutorial-QGIS-create-GeoJSONs-v0.pdf
+    detail_slide: 3
+    order: 2
+    title: Validate
+    tool:
+      name: Online validator
+      short_name: null
+    description: Validate project-level location data using the online validator
+    performer:
+      role_id: pia_external_consultant
+      color_hex: "A02B93"
+      color_scheme: accent5
+    maintainer:
+      role_id: zdv_team_dai
+      color_hex: "0E2841"
+      color_scheme: tx2
+    inputs:
+      - label: Project-level locations from Collect step
+        formats:
+          - Excel
+          - GeoJSON
+    outputs:
+      - label: Validated Project-level Locations
+        format: GeoJSON
+        requirements:
+          - Timestamp in filename
+          - Unique filename
+    links:
+      - label: Online validator
+        url: https://mapme-initiative.github.io/project_location_model/project-location-validator/index.html
+    detail_slides:
+      - slide: 5
+        title: Example of errors in validation result
+        notes:
+          - No Project Locations displayed
+          - GeoJSON will not be generated
+      - slide: 6
+        title: Example error-free validation result
+        notes:
+          - Multi-geometry Project Locations displayed
+          - GeoJSON of validated file is generated and can be downloaded
+
+  - id: visual_plausibility_check
+    order: 3
+    title: Visual plausibility check
+    tool:
+      name: Online validator
+      short_name: null
+    description: Visually verify validated project locations using the online validator map view
+    performer:
+      role_id: kfw_operations
+      color_hex: "00B050"
+      color_scheme: null
+    maintainer:
+      role_id: zdv_team_dai
+      color_hex: "0E2841"
+      color_scheme: tx2
+    inputs:
+      - label: Validated Project-level Locations
+        format: GeoJSON
+    outputs:
+      - label: Validated Project-level Locations (confirmed)
+        format: GeoJSON
+    links:
+      - label: Online validator
+        url: https://mapme-initiative.github.io/project_location_model/project-location-validator/index.html
+    detail_slides:
+      - slide: 5
+        title: Example of errors in validation result
+      - slide: 6
+        title: Example error-free validation result
+
+  - id: upload_data
+    order: 4
+    title: Upload data
+    tool:
+      name: Open Data Platform
+      short_name: ODP
+    description: Upload validated GeoJSON to the Open Data Platform
+    performer:
+      role_id: kfw_operations
+      color_hex: "00B050"
+      color_scheme: null
+    maintainer:
+      role_id: zdv_team_dai
+      color_hex: "0E2841"
+      color_scheme: tx2
+    inputs:
+      - label: Project-level Locations
+        format: GeoJSON
+    outputs:
+      - label: ODP data resource
+        format: ODP data resource
+    links:
+      - label: Upload validated GeoJSON to Open Data Platform (ODP) – Tutorial
+        url: https://opendata.oda.kfw.de/catalogue/#/geostory/1899
+      - label: ODP upload and access tutorial (DOCX in repository)
+        url: tutorial-collect-upload.docx
+    detail_slide: 7
+
+  - id: aggregate_data
+    order: 5
+    title: Aggregate data
+    tool:
+      name: Python script
+      short_name: null
+    description: Aggregate project-level locations to departmental level
+    performer:
+      role_id: idv_geodata_desk
+      color_hex: "0070C0"
+      color_scheme: null
+    maintainer:
+      role_id: idv_geodata_desk
+      color_hex: "0070C0"
+      color_scheme: null
+    inputs:
+      - label: Project-level Locations
+        source: ODP data resource
+    outputs:
+      - label: Departmental-level Project Locations
+        format: ODP data resource
+    links: []
+
+  - id: create_map
+    order: 6
+    title: Create map
+    tool:
+      name: Open Data Platform
+      short_name: ODP
+    description: Create portfolio map from departmental-level project locations on ODP
+    performer:
+      role_id: idv_geodata_desk
+      color_hex: "0070C0"
+      color_scheme: null
+    maintainer:
+      role_id: zdv_team_dai
+      color_hex: "0E2841"
+      color_scheme: tx2
+    inputs:
+      - label: Departmental-level Project Locations
+        source: ODP data resource
+    outputs:
+      - label: ODP map resource
+        format: ODP map resource
+      - label: Portfolio map
+        format: ODP map
+    links: []
+
+flow:
+  description: Linear workflow from collection through map publication
+  sequence:
+    - collect
+    - validate
+    - visual_plausibility_check
+    - upload_data
+    - aggregate_data
+    - create_map
+  artifacts:
+    - from: collect
+      to: validate
+      data: Project-level locations (Excel or GeoJSON)
+    - from: validate
+      to: visual_plausibility_check
+      data: Validated Project-level Locations (GeoJSON with timestamp + unique filename)
+    - from: visual_plausibility_check
+      to: upload_data
+      data: Validated Project-level Locations (GeoJSON)
+    - from: upload_data
+      to: aggregate_data
+      data: Project-level Locations (ODP data resource)
+    - from: aggregate_data
+      to: create_map
+      data: Departmental-level Project Locations (ODP data resource)
