@@ -11,7 +11,6 @@ Interactive guide for the **Project Locations management workflow**: collecting 
 | Live guide (after deploy) | GitHub Pages URL |
 | Workflow structure | [`workflow.yaml`](workflow.yaml) |
 | Author / maintenance guide | [`docs/creating-the-workflow-guide.md`](docs/creating-the-workflow-guide.md) |
-| Source presentation | [`2026-Project-Location-management-workflow-v0.pptx`](2026-Project-Location-management-workflow-v0.pptx) |
 
 ## Local preview
 
