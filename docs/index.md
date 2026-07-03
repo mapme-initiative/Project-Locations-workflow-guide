@@ -1,5 +1,7 @@
 # Project Locations management workflow
 
+(For testing purposes)
+
 Welcome to the guide for updating **project locations** at <span class="glossary-term" data-term="kfw">KfW</span>. This workflow takes project-level location data from collection through validation, upload, aggregation, and map publication on the Open Data Platform (<span class="glossary-term" data-term="odp">ODP</span>).
 
 **Version:** 2026-v0 · **[Glossary](glossary.md)** (hover over highlighted terms anywhere for a quick definition)
