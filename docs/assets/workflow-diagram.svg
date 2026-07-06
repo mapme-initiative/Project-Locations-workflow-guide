@@ -92,7 +92,7 @@
   <!-- Layout: bypass at x=28, steps at x=210, flow axis x=390, labels at x=418 -->
   <text x="390" y="42" class="heading workflow-diagram-title">Project Locations management workflow</text>
 
-  <a class="step-link workflow-step" data-step="1" xlink:href="steps/01-collect/" xlink:title="Step 1: Collect">
+  <a data-step="1" xlink:href="steps/01-collect/" xlink:title="Step 1: Collect">
     <g class="step-frame" transform="translate(210, 84)">
       <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
       <rect width="360" height="58" rx="10" fill="url(#fill-stripes)" stroke="#A02B93"/>
@@ -104,7 +104,7 @@
   <line class="flow-line" x1="390" y1="157" x2="390" y2="209"/>
   <text class="artifact" x="418" y="186">Excel / GeoJSON</text>
 
-  <a class="step-link workflow-step" data-step="2" xlink:href="steps/02-validate/" xlink:title="Step 2: Validate">
+  <a data-step="2" xlink:href="steps/02-validate/" xlink:title="Step 2: Validate">
     <g class="step-frame" transform="translate(210, 230)">
       <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
       <rect width="360" height="58" rx="10" fill="url(#fill-dots)" stroke="#A02B93"/>
@@ -116,7 +116,7 @@
   <line class="flow-line" x1="390" y1="303" x2="390" y2="355"/>
   <text class="artifact" x="418" y="332">GeoJSON</text>
 
-  <a class="step-link workflow-step" data-step="3" xlink:href="steps/03-visual-plausibility-check/" xlink:title="Step 3: Visual plausibility check">
+  <a data-step="3" xlink:href="steps/03-visual-plausibility-check/" xlink:title="Step 3: Visual plausibility check">
     <g class="step-frame" transform="translate(210, 376)">
       <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
       <rect width="360" height="58" rx="10" fill="url(#fill-dots)" stroke="#00B050"/>
@@ -128,7 +128,7 @@
   <line class="flow-line" x1="390" y1="449" x2="390" y2="501"/>
   <text class="artifact" x="418" y="478">Validated GeoJSON</text>
 
-  <a class="step-link workflow-step" data-step="4" xlink:href="steps/04-upload-data/" xlink:title="Step 4: Upload data">
+  <a data-step="4" xlink:href="steps/04-upload-data/" xlink:title="Step 4: Upload data">
     <g class="step-frame" transform="translate(210, 522)">
       <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
       <rect width="360" height="58" rx="10" fill="url(#fill-dots)" stroke="#00B050"/>
@@ -146,7 +146,7 @@
   <line class="flow-line" x1="390" y1="595" x2="390" y2="647"/>
   <text class="artifact" x="418" y="624">ODP data resource</text>
 
-  <a class="step-link workflow-step" data-step="5" xlink:href="steps/05-aggregate-data/" xlink:title="Step 5: Aggregate data">
+  <a data-step="5" xlink:href="steps/05-aggregate-data/" xlink:title="Step 5: Aggregate data">
     <g class="step-frame" transform="translate(210, 668)">
       <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
       <rect width="360" height="58" rx="10" fill="url(#fill-stripes)" stroke="#0070C0"/>
@@ -161,7 +161,7 @@
     <tspan x="418" dy="14">locations</tspan>
   </text>
 
-  <a class="step-link workflow-step" data-step="6" xlink:href="steps/06-create-map/" xlink:title="Step 6: Create map">
+  <a data-step="6" xlink:href="steps/06-create-map/" xlink:title="Step 6: Create map">
     <g class="step-frame" transform="translate(210, 814)">
       <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
       <rect width="360" height="58" rx="10" fill="url(#fill-dots)" stroke="#0070C0"/>
