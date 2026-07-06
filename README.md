@@ -4,13 +4,13 @@
 
 Interactive guide for the **Project Locations management workflow**: collecting project locations in the PLM, validating, uploading to ODP, aggregating, and publishing the portfolio map.
 
-**Documentation site:** _Enable GitHub Pages (see below) and add the URL here._
+**Documentation site:** 
 
 ## Quick links
 
 | Resource | Location |
 |----------|----------|
-| Live guide (after deploy) | GitHub Pages URL |
+| Live guide (after deploy) | [GitHub Pages URL](https://mapme-initiative.github.io/Project-Locations-workflow-guide/) |
 | Workflow structure | [`workflow.yaml`](workflow.yaml) |
 | Author / maintenance guide | [`docs/creating-the-workflow-guide.md`](docs/creating-the-workflow-guide.md) |
 
