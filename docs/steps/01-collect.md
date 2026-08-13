@@ -46,7 +46,7 @@ Collect project-level location metadata using the Project Location Model (PLM). 
     1. Download and open the PLM
 
 
-    2. Fill in the project-level location metadata with all of the required columns (indicated in red), **excluding** the Latitude and Longitude columns.
+    2. Fill in the project-level location metadata with all of the columns, **excluding** the Latitude and Longitude columns.
 
         ![PLM example with Unique ID](../assets/images/collect-qgis-plm-example.png)
 
