@@ -2,7 +2,10 @@ name: Generate Timestamped PDF Versioning
 on:
   push:
     paths:
-      - '**.md' # Triggers whenever any Markdown file is edited and saved
+      - '**.md'
+
+permissions:
+  contents: write
 
 jobs:
   build-pdf:
@@ -11,8 +14,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Needed to detect which file changed
-          token: ${{ secrets.GITHUB_TOKEN }} # Allows the script to save files back to your repo
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get changed Markdown files
         id: changed-files
@@ -26,48 +29,69 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y pandoc weasyprint
 
-      - name: Process, Timestamp, and Convert
+      - name: Process, Style, and Convert
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          # 1. Create standard human-readable timestamp for document header
+          # Timestamps
           HEADER_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          
-          # 2. Create clean timestamp string for the unique filename (YYYYMMDD_HHMMSS)
           FILE_TIME=$(date -u +"%Y%m%d_%H%M%S")
           
-          # 3. Create a dedicated centralized output folder
           mkdir -p pdf-versions
-          
+
+          # Create custom print utility overrides so code blocks/backgrounds render correctly in PDF prints
+          cat << 'EOF' > print-adjustments.css
+          @page {
+            size: A4;
+            margin: 20mm;
+          }
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+          }
+          .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 10px;
+          }
+          /* Ensure blockquotes and code styles display with background fills */
+          blockquote, pre, code {
+            background-color: #f6f8fa !important;
+            border-left: 0.25em solid #d0d7de !important;
+          }
+          EOF
+
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "Processing $file..."
             
-            # Inject the timestamp into the very top of the Markdown text
+            # Inject timestamp directly to the Markdown document header
             sed -i "1i> **Last Exported:** $HEADER_TIME\n" "$file"
             
-            # Extract the raw file name without paths or extensions
             filename=$(basename -- "$file")
             filename_no_ext="${filename%.*}"
-            
-            # Convert to a unique, non-overwriting PDF filename inside the centralized folder
             output_pdf="pdf-versions/${filename_no_ext}_${FILE_TIME}.pdf"
             
-            echo "Generating versioned PDF: $output_pdf"
-            pandoc "$file" -o "$output_pdf" --pdf-engine=weasyprint
+            # 1. Compile Markdown into a Standalone HTML document wrapped with web-ready classes
+            # 2. Inject official GitHub Markdown themes alongside our print utility fixes
+            pandoc "$file" --standalone \
+              -c "https://cloudflare.com" \
+              -c print-adjustments.css \
+              -t html \
+              | sed '/<body>/c\<body class="markdown-body">' \
+              | weasyprint - "$output_pdf"
           done
 
       - name: Commit and Push PDFs Back to Repository
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Stage the new unique PDFs from the centralized folder to git
           git add pdf-versions/*.pdf
           
-          # Check if there are actually files to commit to prevent errors
           if git diff --staged --quiet; then
             echo "No new PDF versions to commit."
           else
-            git commit -m "Automated system: Added unique timestamped PDF versions [skip ci]"
+            git commit -m "Automated system: Added styled GitHub layout PDFs [skip ci]"
             git push origin HEAD:${{ github.ref_name }}
           fi
