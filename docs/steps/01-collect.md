@@ -5,7 +5,7 @@
 
     **Performed by:** external consultants
 
-    **Maintained by:** KfW Geodata-Desk
+    **Maintained by:** Geodata-Desk
 
     **Next step:** [2 Validate](02-validate.md)
 
