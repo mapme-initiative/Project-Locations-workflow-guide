@@ -1,0 +1,73 @@
+name: Generate Timestamped PDF Versioning
+on:
+  push:
+    paths:
+      - '**.md' # Triggers whenever any Markdown file is edited and saved
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed to detect which file changed
+          token: ${{ secrets.GITHUB_TOKEN }} # Allows the script to save files back to your repo
+
+      - name: Get changed Markdown files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: '**.md'
+
+      - name: Install Pandoc and Weasyprint
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc weasyprint
+
+      - name: Process, Timestamp, and Convert
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          # 1. Create standard human-readable timestamp for document header
+          HEADER_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          # 2. Create clean timestamp string for the unique filename (YYYYMMDD_HHMMSS)
+          FILE_TIME=$(date -u +"%Y%m%d_%H%M%S")
+          
+          # 3. Create a dedicated centralized output folder
+          mkdir -p pdf-versions
+          
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Processing $file..."
+            
+            # Inject the timestamp into the very top of the Markdown text
+            sed -i "1i> **Last Exported:** $HEADER_TIME\n" "$file"
+            
+            # Extract the raw file name without paths or extensions
+            filename=$(basename -- "$file")
+            filename_no_ext="${filename%.*}"
+            
+            # Convert to a unique, non-overwriting PDF filename inside the centralized folder
+            output_pdf="pdf-versions/${filename_no_ext}_${FILE_TIME}.pdf"
+            
+            echo "Generating versioned PDF: $output_pdf"
+            pandoc "$file" -o "$output_pdf" --pdf-engine=weasyprint
+          done
+
+      - name: Commit and Push PDFs Back to Repository
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Stage the new unique PDFs from the centralized folder to git
+          git add pdf-versions/*.pdf
+          
+          # Check if there are actually files to commit to prevent errors
+          if git diff --staged --quiet; then
+            echo "No new PDF versions to commit."
+          else
+            git commit -m "Automated system: Added unique timestamped PDF versions [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
