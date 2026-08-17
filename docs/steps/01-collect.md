@@ -7,8 +7,6 @@
 
     **Maintained by:** Geodata-Desk
 
-    **Previous step:** —
-
     **Next step:** [2 Validate](02-validate.md)
 
 ## Purpose
