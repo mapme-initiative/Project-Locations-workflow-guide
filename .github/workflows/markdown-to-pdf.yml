@@ -1,4 +1,4 @@
-name: Generate Timestamped HTML Versioning
+name: Generate Timestamped PDF Versioning
 on:
   push:
     paths:
@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  build-html:
+  build-pdf:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,54 +23,125 @@ jobs:
         with:
           files: '**.md'
 
-      - name: Install Pandoc
+      - name: Install Pandoc and Weasyprint
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc
+          sudo apt-get install -y pandoc weasyprint
 
-      - name: Process, Style, and Convert to HTML
+      - name: Process, Style, and Convert to PDF
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           HEADER_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           FILE_TIME=$(date -u +"%Y%m%d_%H%M%S")
           
-          # Create a centralized html folder
-          mkdir -p html-versions
+          mkdir -p pdf-versions
+
+          # Generate the GitHub print engine styles with print structural rules
+          cat << 'EOF' > print-adjustments.css
+          @page {
+            size: A4;
+            margin: 20mm;
+            @bottom-right {
+              content: counter(page);
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+              font-size: 9pt;
+              color: #57606a;
+            }
+          }
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #24292f;
+            padding: 10px;
+          }
+          /* Custom Alert Callout Boxes to replicate GitHub layout in PDF */
+          .admonition-box {
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-left: 0.25em solid #0969da;
+            background-color: #f6f8fa;
+            border-radius: 6px;
+          }
+          .admonition-title {
+            font-weight: 600;
+            color: #0969da;
+            margin-bottom: 4px;
+          }
+          /* Ensure code elements retain gray block backgrounds */
+          pre, code {
+            background-color: #f6f8fa !important;
+            padding: 0.2em 0.4em;
+            border-radius: 6px;
+            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Courier, monospace;
+            font-size: 85%;
+          }
+          blockquote {
+            margin: 0 0 16px 0;
+            padding: 0 1em;
+            color: #57606a;
+            border-left: 0.25em solid #d0d7de;
+          }
+          hr {
+            height: 0.25em;
+            padding: 0;
+            margin: 24px 0;
+            background-color: #d0d7de;
+            border: 0;
+          }
+          EOF
 
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "Processing $file..."
             
-            # Inject timestamp directly to the Markdown document header
-            sed -i "1i> **Last Exported:** $HEADER_TIME\n" "$file"
+            cp "$file" temp_process.md
             
+            # 1. Inject the running timestamp into document header
+            sed -i "1i> **Last Exported:** $HEADER_TIME\n" temp_process.md
+            
+            # 2. FIX FOR CALLOUTS: Convert '!!! type Title' into styled clean HTML division nodes
+            sed -i 's/^!!!\s*overview\s*\(.*\)$/<div class="admonition-box"><div class="admonition-title">ℹ️ \1<\/div>/g' temp_process.md
+            sed -i 's/^!!!\s*warning\s*\(.*\)$/<div class="admonition-box" style="border-color:#d4a72c;"><div class="admonition-title" style="color:#b08105;">⚠️ \1<\/div>/g' temp_process.md
+            sed -i 's/^!!!\s*info\s*\(.*\)$/<div class="admonition-box"><div class="admonition-title">ℹ️ \1<\/div>/g' temp_process.md
+
+            # 3. FIX FOR TABS: Treat tab declarations cleanly
+            # Converts '=== "Tab Title"' or '=== tab "Title"' into explicit minor subtitles
+            sed -i 's/^===\s*tab\s*"\(.*\)"/#### 📁 \1/g' temp_process.md
+            sed -i 's/^===\s*"\(.*\)"/#### 📁 \1/g' temp_process.md
+            
+            # Strip out isolated closing/structural trailing '===' markers to avoid raw clutter leaks
+            sed -i 's/^===\s*$//g' temp_process.md
+
             filename=$(basename -- "$file")
             filename_no_ext="${filename%.*}"
+            output_pdf="pdf-versions/${filename_no_ext}_${FILE_TIME}.pdf"
             
-            # Define output destination as an HTML file
-            output_html="html-versions/${filename_no_ext}_${FILE_TIME}.html"
+            echo "Compiling clean structured PDF: $output_pdf"
             
-            echo "Generating styled HTML: $output_html"
-            
-            # Compile standalone HTML web page with structural class hooks for the CSS engine
-            pandoc "$file" --standalone \
+            # Process via pandoc utilizing standard web layout engines into Weasyprint
+            pandoc temp_process.md --standalone \
               -c "https://cloudflare.com" \
+              -c print-adjustments.css \
               -t html \
-              | sed '/<body>/c\<body class="markdown-body" style="padding: 45px; max-width: 980px; margin: 0 auto;">' \
-              > "$output_html"
+              | sed '/<body>/c\<body class="markdown-body">' \
+              | weasyprint - "$output_pdf"
+              
+            rm temp_process.md
           done
 
-      - name: Commit and Push HTML Back to Repository
+      - name: Commit and Push PDFs Back to Repository
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           git config --local user.email "github-actions[bot]@://github.com"
           git config --local user.name "github-actions[bot]"
           
-          git add html-versions/*.html
+          # Track new physical PDFs from centralized path
+          git add pdf-versions/*.pdf
           
           if git diff --staged --quiet; then
-            echo "No new HTML versions to commit."
+            echo "No new PDF versions to commit."
           else
-            git commit -m "Automated system: Added styled GitHub web layouts [skip ci]"
+            git commit -m "Automated system: Built versioned PDFs with tab fixes [skip ci]"
             git push origin HEAD:${{ github.ref_name }}
           fi
