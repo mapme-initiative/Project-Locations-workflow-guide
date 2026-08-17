@@ -118,9 +118,9 @@ jobs:
 
             echo "Compiling document inside path contextual container..."
             
-            # Run compilation directly from the source directory so images are found natively
+            # FIXED COMPILATION LINE: Format set cleanly to gfm with raw_html handled as an explicit modifier
             pandoc temp_process.md --standalone \
-              --from markdown+gfm+raw_html \
+              --from gfm+raw_html \
               -c "https://cloudflare.com" \
               -c "$ROOT_DIR/print-adjustments.css" \
               --pdf-engine=weasyprint \
@@ -141,6 +141,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No new PDF versions to commit."
           else
-            git commit -m "Automated system: Built corrected PDFs with relative assets and symbols resolved [skip ci]"
+            git commit -m "Automated system: Built corrected PDFs with relative assets and formats resolved [skip ci]"
             git push origin HEAD:${{ github.ref_name }}
           fi
