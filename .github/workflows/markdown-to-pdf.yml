@@ -1,0 +1,138 @@
+name: Generate Timestamped PDF Versioning
+on:
+  push:
+    paths:
+      - '**.md'
+
+permissions:
+  contents: write
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get changed Markdown files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: '**.md'
+
+      - name: Set up Python
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # NOTE: adjust to however you already install mkdocs-material for this
+      # repo (e.g. `pip install -r requirements.txt` if you have one).
+      - name: Install MkDocs and theme
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: pip install mkdocs mkdocs-material pymdown-extensions
+
+      - name: Build the real site
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: mkdocs build --site-dir _site
+
+      - name: Serve the built site locally
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          python -m http.server 8000 --directory _site &
+          # wait for the server to actually accept connections
+          for i in $(seq 1 20); do
+            curl -sf http://localhost:8000/ > /dev/null && break
+            sleep 0.5
+          done
+
+      - name: Install Playwright (Chromium)
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          npm init -y > /dev/null
+          npm install playwright
+          npx playwright install --with-deps chromium
+
+      - name: Print pages to PDF exactly as the browser would
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          HEADER_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          FILE_TIME=$(date -u +"%Y%m%d_%H%M%S")
+          ROOT_DIR=$(pwd)
+          mkdir -p "$ROOT_DIR/pdf-versions"
+
+          cat << 'NODE_EOF' > "$ROOT_DIR/print-to-pdf.js"
+          const { chromium } = require('playwright');
+
+          async function main() {
+            const [, , url, outPath, headerText] = process.argv;
+            const browser = await chromium.launch();
+            const page = await browser.newPage();
+            await page.goto(url, { waitUntil: 'networkidle' });
+
+            await page.pdf({
+              path: outPath,
+              format: 'A4',
+              printBackground: true,
+              margin: { top: '20mm', bottom: '20mm', left: '20mm', right: '20mm' },
+              displayHeaderFooter: true,
+              headerTemplate: `
+                <div style="font-size:9px;color:#57606a;width:100%;
+                            padding:0 20mm;text-align:right;
+                            font-family:-apple-system,Helvetica,Arial,sans-serif;">
+                  Last Exported: ${headerText}
+                </div>`,
+              footerTemplate: `
+                <div style="font-size:9px;color:#57606a;width:100%;
+                            padding:0 20mm;text-align:right;
+                            font-family:-apple-system,Helvetica,Arial,sans-serif;">
+                  <span class="pageNumber"></span> / <span class="totalPages"></span>
+                </div>`,
+            });
+
+            await browser.close();
+          }
+
+          main().catch((err) => { console.error(err); process.exit(1); });
+          NODE_EOF
+
+          # NOTE: assumes docs live under docs/ and mkdocs uses the default
+          # use_directory_urls (true) -> docs/foo/bar.md -> /foo/bar/
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Processing file: $file"
+
+            rel_path="${file#docs/}"
+            rel_path="${rel_path%.md}"
+
+            if [[ "$rel_path" == "index" || "$rel_path" == */index ]]; then
+              url_path="${rel_path%index}"
+            else
+              url_path="${rel_path}/"
+            fi
+
+            page_url="http://localhost:8000/${url_path}"
+            filename_no_ext=$(basename "$rel_path")
+            output_pdf="$ROOT_DIR/pdf-versions/${filename_no_ext}_${FILE_TIME}.pdf"
+
+            echo "  -> $page_url"
+            node "$ROOT_DIR/print-to-pdf.js" "$page_url" "$output_pdf" "$HEADER_TIME"
+          done
+
+      - name: Commit and Push PDFs Back to Repository
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          cd ${{ github.workspace }}
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add pdf-versions/*.pdf
+
+          if git diff --staged --quiet; then
+            echo "No new PDF versions to commit."
+          else
+            git commit -m "Automated system: Built PDFs from rendered site pages [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
