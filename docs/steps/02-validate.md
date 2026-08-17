@@ -26,6 +26,10 @@ Validate Project Location data from the Collect step. A successful validation pr
 
 1. Upload the project-level locations file on the online validator website by selecting the blue File Upload button.
 
+    <img
+      src="../../assets/images/validate-file-upload.png"
+      class="instruction-figure instruction-figure--90"
+    />
 
 2. Review the validation result on the screen. A failed screening will result in validation errors (red background) indicating the data row where the error occurs in the PLM and a short message describing the type of error - please see examples below. In these cases, please correct the errors and upload the updated file for validation again. 
 
