@@ -32,13 +32,16 @@ jobs:
       - name: Process, Style, and Convert to PDF
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
+          # 1. Establish timestamps
           HEADER_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           FILE_TIME=$(date -u +"%Y%m%d_%H%M%S")
           
-          mkdir -p pdf-versions
+          # Get absolute root path before entering loops
+          ROOT_DIR=$(pwd)
+          mkdir -p "$ROOT_DIR/pdf-versions"
 
-          # Generate the GitHub print engine styles with print structural rules
-          cat << 'EOF' > print-adjustments.css
+          # 2. Generate custom print stylesheets with print rules
+          cat << 'EOF' > "$ROOT_DIR/print-adjustments.css"
           @page {
             size: A4;
             margin: 20mm;
@@ -54,9 +57,7 @@ jobs:
             font-size: 14px;
             line-height: 1.6;
             color: #24292f;
-            padding: 10px;
           }
-          /* Custom Alert Callout Boxes to replicate GitHub layout in PDF */
           .admonition-box {
             padding: 12px 16px;
             margin-bottom: 16px;
@@ -69,63 +70,61 @@ jobs:
             color: #0969da;
             margin-bottom: 4px;
           }
-          /* Ensure code elements retain gray block backgrounds */
           pre, code {
             background-color: #f6f8fa !important;
             padding: 0.2em 0.4em;
             border-radius: 6px;
-            font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Courier, monospace;
+            font-family: ui-monospace, SFMono-Regular, SF Mono, monospace;
             font-size: 85%;
           }
-          blockquote {
-            margin: 0 0 16px 0;
-            padding: 0 1em;
-            color: #57606a;
-            border-left: 0.25em solid #d0d7de;
-          }
-          hr {
-            height: 0.25em;
-            padding: 0;
-            margin: 24px 0;
-            background-color: #d0d7de;
-            border: 0;
+          img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1em auto;
           }
           EOF
 
+          # 3. Dynamic multi-file directory tracker loop
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "Processing $file..."
+            echo "Processing file: $file"
             
-            cp "$file" temp_process.md
+            # Isolate directory and filename details
+            file_dir=$(dirname "$file")
+            file_name=$(basename "$file")
+            filename_no_ext="${file_name%.*}"
             
-            # 1. Inject the running timestamp into document header
+            # Define exact output path
+            output_pdf="$ROOT_DIR/pdf-versions/${filename_no_ext}_${FILE_TIME}.pdf"
+            
+            # Switch contexts directly into the file's native subdirectory to preserve relative paths
+            cd "$ROOT_DIR/$file_dir"
+            
+            # Create isolated scratch copy inside the directory
+            cp "$file_name" temp_process.md
+            
+            # Injects execution runtime stamps
             sed -i "1i> **Last Exported:** $HEADER_TIME\n" temp_process.md
             
-            # 2. FIX FOR CALLOUTS: Convert '!!! type Title' into styled clean HTML division nodes
+            # FIX FOR CALLOUTS: Evaluates text structures cleanly
             sed -i 's/^!!!\s*overview\s*\(.*\)$/<div class="admonition-box"><div class="admonition-title">ℹ️ \1<\/div>/g' temp_process.md
             sed -i 's/^!!!\s*warning\s*\(.*\)$/<div class="admonition-box" style="border-color:#d4a72c;"><div class="admonition-title" style="color:#b08105;">⚠️ \1<\/div>/g' temp_process.md
             sed -i 's/^!!!\s*info\s*\(.*\)$/<div class="admonition-box"><div class="admonition-title">ℹ️ \1<\/div>/g' temp_process.md
 
-            # 3. FIX FOR TABS: Treat tab declarations cleanly
-            # Converts '=== "Tab Title"' or '=== tab "Title"' into explicit minor subtitles
+            # FIX FOR TABS: flattens structural tab collections smoothly
             sed -i 's/^===\s*tab\s*"\(.*\)"/#### 📁 \1/g' temp_process.md
             sed -i 's/^===\s*"\(.*\)"/#### 📁 \1/g' temp_process.md
-            
-            # Strip out isolated closing/structural trailing '===' markers to avoid raw clutter leaks
             sed -i 's/^===\s*$//g' temp_process.md
 
-            filename=$(basename -- "$file")
-            filename_no_ext="${filename%.*}"
-            output_pdf="pdf-versions/${filename_no_ext}_${FILE_TIME}.pdf"
+            echo "Compiling document inside path contextual container..."
             
-            echo "Compiling clean structured PDF: $output_pdf"
-            
-            # Process via pandoc utilizing standard web layout engines into Weasyprint
+            # Run compilation directly from the source directory so images are found natively
             pandoc temp_process.md --standalone \
+              --from markdown+gfm+raw_html \
               -c "https://cloudflare.com" \
-              -c print-adjustments.css \
-              -t html \
-              | sed '/<body>/c\<body class="markdown-body">' \
-              | weasyprint - "$output_pdf"
+              -c "$ROOT_DIR/print-adjustments.css" \
+              --pdf-engine=weasyprint \
+              -o "$output_pdf"
               
             rm temp_process.md
           done
@@ -133,15 +132,15 @@ jobs:
       - name: Commit and Push PDFs Back to Repository
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          git config --local user.email "github-actions[bot]@://github.com"
+          cd ${{ github.workspace }}
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Track new physical PDFs from centralized path
           git add pdf-versions/*.pdf
           
           if git diff --staged --quiet; then
             echo "No new PDF versions to commit."
           else
-            git commit -m "Automated system: Built versioned PDFs with tab fixes [skip ci]"
+            git commit -m "Automated system: Built corrected PDFs with relative assets and symbols resolved [skip ci]"
             git push origin HEAD:${{ github.ref_name }}
           fi
