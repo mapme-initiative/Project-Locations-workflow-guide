@@ -5,7 +5,7 @@
 !!! overview
     **Tool:** [Online validator](https://mapme-initiative.github.io/project_location_model/project-location-validator/index.html)
 
-    **Performed by:** KfW sector team members (project managers/ project analysts)
+    **Performed by:** KfW sector teams (project managers/ project analysts)
 
     **Maintained by:** KfW Team Data Analytics & Intelligence (DAI)
 
