@@ -1,6 +1,6 @@
 # Updating existing data
 
-Some teams began collecting Project Locations with **older Project Locations Model (PLM) template versions** and have not yet uploaded the data onto the Open Data Platform (ODP). This page describes how to transition to the **current workflow** before continuing with [Step 1: Collect](steps/01-collect.md). The current workflow assumes **PLM v4**. 
+Some teams began collecting Project Locations with **older Project Locations Model (PLM) Excel template versions**. This page describes how to transition to the **current workflow** before continuing with [Step 1: Collect](steps/01-collect.md). The current workflow assumes **PLM v4**. 
 
 ---
 
@@ -14,7 +14,7 @@ Some teams began collecting Project Locations with **older Project Locations Mod
 
 ## Data not yet on ODP (PLM older than v4)
 
-If the collection of Project Locations has begun with an **older PLM template** and have not yet been published on the <span class="glossary-term" data-term="odp">ODP</span>:
+If the collection of Project Locations has begun with an **older PLM template**:
 
 1. Download the **latest PLM (v4)** from the [Project Locations Model](https://mapme-initiative.github.io/project_location_model/annex1.html).
 2. **Manually transfer** existing data from the older template into the new file.
