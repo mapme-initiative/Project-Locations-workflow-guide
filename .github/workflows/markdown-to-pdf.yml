@@ -121,6 +121,16 @@ jobs:
             });
             await page.waitForTimeout(200);
 
+            // IMPORTANT: page.pdf() emulates @media print by default. If the
+            // site's own print stylesheet hides/resets body text (common
+            // when print CSS is written mainly to hide nav/buttons but
+            // overreaches), that text will be invisible in the PDF even
+            // though it's perfectly visible in a normal browser tab. Force
+            // the normal screen styles instead so we get what you'd
+            // actually see on the live page.
+            await page.emulateMedia({ media: 'screen' });
+            await page.waitForTimeout(200);
+
             await page.pdf({
               path: outPath,
               format: 'A4',
