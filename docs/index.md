@@ -6,7 +6,7 @@ Welcome to the guide for collecting and updating **Project Locations** at KfW. T
 
 **Version:** 2026-v0 · **[Glossary](glossary.md)** (hover over highlighted terms anywhere for a quick definition)
 
-!!! warning "New collection or updating existing data?" Please check the Project Locations Model (PLM) Excel template filename for the version number.
+!!! warning "New collection or updating existing data? Please check the Project Locations Model (PLM) Excel template filename for the version number."
     - **New collection** or **updating existing collection** → start at [Step 1: Collect](steps/01-collect.md)
     - **Existing collection with older version of Project Location Model (PLM Excel template; older than version 4.0)** → read [Updating existing data](updating-existing-data.md) first
 
