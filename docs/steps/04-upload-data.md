@@ -7,7 +7,7 @@
 
     **Performed by:** KfW sector teams (project managers/ project analysts)
 
-    **Maintained by:** KfW Team Data Analytics and Intelligence (DAI)
+    **Maintained by:** KfW Team Data Analytics & Artificial Intelligence (DAI)
 
     **Previous step:** [3 Visual plausibility check](03-visual-plausibility-check.md)
 
@@ -34,7 +34,7 @@ If support from <span class="glossary-term" data-term="idv">Geodata-Desk</span> 
 |---------------------|---------|
 | **Attachments** | **Points-based:** validated <span class="glossary-term" data-term="geojson">GeoJSON</span> or unvalidated PLM |
 | | **Lines / polygons:** validated <span class="glossary-term" data-term="geojson">GeoJSON</span> or unvalidated PLM **and** geometry files (if not yet successfully joined) |
-| **Access list** | Email addresses of <span class="glossary-term" data-term="kfw">KfW</span> colleagues who should have access to the dataset (each must have signed in to <span class="glossary-term" data-term="odp">ODP</span> at least once) |
+| **Access list** | Email addresses of KfW colleagues who should have access to the dataset (each must have signed in to <span class="glossary-term" data-term="odp">ODP</span> at least once) |
 | **Deadlines** | Any urgent deadlines by which the dataset and/or map need to be prepared |
 
 !!! note "PLM errors"
