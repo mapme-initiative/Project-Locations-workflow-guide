@@ -1,4 +1,4 @@
-name: Generate Timestamped PDF Versioning
+name: Generate Timestamped HTML Versioning
 on:
   push:
     paths:
@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  build-pdf:
+  build-html:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,43 +23,20 @@ jobs:
         with:
           files: '**.md'
 
-      - name: Install Pandoc and Weasyprint
+      - name: Install Pandoc
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc weasyprint
+          sudo apt-get install -y pandoc
 
-      - name: Process, Style, and Convert
+      - name: Process, Style, and Convert to HTML
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          # Timestamps
           HEADER_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           FILE_TIME=$(date -u +"%Y%m%d_%H%M%S")
           
-          mkdir -p pdf-versions
-
-          # Create custom print utility overrides so code blocks/backgrounds render correctly in PDF prints
-          cat << 'EOF' > print-adjustments.css
-          @page {
-            size: A4;
-            margin: 20mm;
-          }
-          body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-          }
-          .markdown-body {
-            box-sizing: border-box;
-            min-width: 200px;
-            max-width: 980px;
-            margin: 0 auto;
-            padding: 10px;
-          }
-          /* Ensure blockquotes and code styles display with background fills */
-          blockquote, pre, code {
-            background-color: #f6f8fa !important;
-            border-left: 0.25em solid #d0d7de !important;
-          }
-          EOF
+          # Create a centralized html folder
+          mkdir -p html-versions
 
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "Processing $file..."
@@ -69,29 +46,31 @@ jobs:
             
             filename=$(basename -- "$file")
             filename_no_ext="${filename%.*}"
-            output_pdf="pdf-versions/${filename_no_ext}_${FILE_TIME}.pdf"
             
-            # 1. Compile Markdown into a Standalone HTML document wrapped with web-ready classes
-            # 2. Inject official GitHub Markdown themes alongside our print utility fixes
+            # Define output destination as an HTML file
+            output_html="html-versions/${filename_no_ext}_${FILE_TIME}.html"
+            
+            echo "Generating styled HTML: $output_html"
+            
+            # Compile standalone HTML web page with structural class hooks for the CSS engine
             pandoc "$file" --standalone \
               -c "https://cloudflare.com" \
-              -c print-adjustments.css \
               -t html \
-              | sed '/<body>/c\<body class="markdown-body">' \
-              | weasyprint - "$output_pdf"
+              | sed '/<body>/c\<body class="markdown-body" style="padding: 45px; max-width: 980px; margin: 0 auto;">' \
+              > "$output_html"
           done
 
-      - name: Commit and Push PDFs Back to Repository
+      - name: Commit and Push HTML Back to Repository
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "github-actions[bot]@://github.com"
           git config --local user.name "github-actions[bot]"
           
-          git add pdf-versions/*.pdf
+          git add html-versions/*.html
           
           if git diff --staged --quiet; then
-            echo "No new PDF versions to commit."
+            echo "No new HTML versions to commit."
           else
-            git commit -m "Automated system: Added styled GitHub layout PDFs [skip ci]"
+            git commit -m "Automated system: Added styled GitHub web layouts [skip ci]"
             git push origin HEAD:${{ github.ref_name }}
           fi
