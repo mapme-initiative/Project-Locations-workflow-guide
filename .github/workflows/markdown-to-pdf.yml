@@ -89,6 +89,69 @@ jobs:
             await page.evaluate(() => window.scrollTo(0, 0));
           }
 
+          async function forceLoadImages(page) {
+            // Make every image eager and wait for it to actually finish
+            // loading, regardless of viewport visibility or `loading="lazy"`.
+            await page.evaluate(async () => {
+              const imgs = Array.from(document.images);
+              imgs.forEach((img) => { img.loading = 'eager'; });
+              await Promise.all(
+                imgs.map((img) => {
+                  if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+                  return new Promise((resolve) => {
+                    img.addEventListener('load', resolve, { once: true });
+                    img.addEventListener('error', resolve, { once: true });
+                  });
+                })
+              );
+            });
+          }
+
+          async function expandTabs(page) {
+            // MkDocs-Material's "tabbed-alternate" tabs keep every tab's
+            // content in the DOM but hide all but the selected one via
+            // CSS tied to a radio input. For print we want every tab's
+            // content stacked and clearly labelled instead of just the
+            // active one.
+            await page.evaluate(() => {
+              document.querySelectorAll('.tabbed-set').forEach((set) => {
+                const labels = Array.from(
+                  set.querySelectorAll(':scope > .tabbed-labels > label')
+                ).map((l) => l.textContent.trim());
+                const blocks = set.querySelectorAll(':scope > .tabbed-content > *');
+
+                blocks.forEach((block, i) => {
+                  block.style.display = 'block';
+                  block.style.height = 'auto';
+                  block.style.maxHeight = 'none';
+                  block.style.overflow = 'visible';
+                  block.style.opacity = '1';
+
+                  if (i > 0) {
+                    const divider = document.createElement('div');
+                    divider.style.borderTop = '2px solid #d0d7de';
+                    divider.style.margin = '24px 0 16px 0';
+                    block.parentNode.insertBefore(divider, block);
+                  }
+
+                  const heading = document.createElement('div');
+                  heading.textContent = labels[i] || `Tab ${i + 1}`;
+                  heading.style.fontWeight = '700';
+                  heading.style.fontSize = '1.05em';
+                  heading.style.marginBottom = '8px';
+                  block.parentNode.insertBefore(heading, block);
+                });
+
+                // hide the now-redundant clickable tab bar and radio inputs
+                const labelBar = set.querySelector(':scope > .tabbed-labels');
+                if (labelBar) labelBar.style.display = 'none';
+                set.querySelectorAll(':scope > input').forEach((inp) => {
+                  inp.style.display = 'none';
+                });
+              });
+            });
+          }
+
           async function main() {
             const [, , url, outPath, headerText] = process.argv;
             const browser = await chromium.launch();
@@ -98,6 +161,8 @@ jobs:
             // wait for fonts + trigger any lazy/reveal content via scrolling
             await page.evaluate(() => document.fonts && document.fonts.ready);
             await autoScroll(page);
+            await forceLoadImages(page);
+            await expandTabs(page);
             await page.waitForTimeout(500);
 
             // Safety net: force-disable animations/transitions and neutralise
