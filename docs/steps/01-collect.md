@@ -2,11 +2,8 @@
 
 !!! overview
     **Tool:** [Project Location Model (PLM)](https://mapme-initiative.github.io/project_location_model/annex1.html) (v4 as of 01.07.2026)
-
     **Performed by:** external consultants
-
     **Maintained by:** Geodata-Desk
-
     **Next step:** [2 Validate](02-validate.md)
 
 ## Purpose
