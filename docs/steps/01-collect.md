@@ -1,5 +1,3 @@
---8<-- "includes/workflow-nav.md"
-
 # Step 1: Collect
 
 !!! overview
