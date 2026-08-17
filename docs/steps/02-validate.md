@@ -5,9 +5,9 @@
 !!! overview
     **Tool:** [Online validator](https://mapme-initiative.github.io/project_location_model/project-location-validator/index.html)
 
-    **Performed by:** <span class="glossary-term" data-term="pia">PIA/ external consultant</span>
+    **Performed by:** external consultants
 
-    **Maintained by:** <span class="glossary-term" data-term="zdv">ZDV</span> (<span class="glossary-term" data-term="dai">DAI</span>)
+    **Maintained by:** KfW Team Data Analytics & Intelligence (DAI)
 
     **Previous step:** [1 Collect](01-collect.md)
 
@@ -15,12 +15,12 @@
 
 ## Purpose
 
-Validate project-level location data from the Collect step. A successful validation produces a <span class="glossary-term" data-term="geojson">GeoJSON</span> file with a timestamp and unique filename.
+Validate Project Location data from the Collect step. A successful validation produces a <span class="glossary-term" data-term="geojson">GeoJSON</span> file with a timestamp and unique filename.
 
 ## Requirements
 
 - Output from [Step 1: Collect](01-collect.md) (Excel or <span class="glossary-term" data-term="geojson">GeoJSON</span>)
-- Access to the online validator (link under Tool in Overview)
+- Use the [Online validator](https://mapme-initiative.github.io/project_location_model/project-location-validator/index.html)
 
 ## Procedure
 
@@ -62,4 +62,4 @@ Validate project-level location data from the Collect step. A successful validat
 
 | Item | Format | Notes |
 |------|--------|-------|
-| Validated Project-level Locations | <span class="glossary-term" data-term="geojson">GeoJSON</span> | Timestamp + unique filename required |
+| Validated Project-level Locations | <span class="glossary-term" data-term="geojson">GeoJSON</span> | Timestamp + unique filename automatically generated |
