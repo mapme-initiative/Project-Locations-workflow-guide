@@ -7,7 +7,7 @@
 
     **Performed by:** KfW sector teams (project managers/ project analysts)
 
-    **Maintained by:** KfW Team Data Analytics & Intelligence (DAI)
+    **Maintained by:** KfW Team Data Analytics & Artificial Intelligence (DAI)
 
     **Previous step:** [2 Validate](02-validate.md)
 
