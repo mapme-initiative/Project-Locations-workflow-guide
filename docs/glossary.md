@@ -1,6 +1,6 @@
 # Glossary
 
-Alphabetical reference for abbreviations used in this guide. Click any **highlighted term** on a step page to open a quick reminder, or browse the full list below.
+Alphabetical reference for abbreviations used in this guide.
 
 [← Back to workflow overview](index.md)
 
@@ -54,14 +54,6 @@ Software for creating, editing, and analysing spatial data. QGIS is used in the 
 
 ---
 
-## KfW {#kfw}
-
-**Kreditanstalt für Wiederaufbau**
-
-German development bank
-
----
-
 ## ODP {#odp}
 
 **Open Data Platform**
@@ -78,14 +70,6 @@ KfW operations role (with PM) responsible for updating project locations, includ
 
 ---
 
-## PIA {#pia}
-
-**PIA/ external consultant**
-
-External consultant who performs the Collect and Validate steps using the PLM and online validator.
-
----
-
 ## PLM {#plm}
 
 **Project Locations Model**
@@ -99,14 +83,6 @@ Excel template (XLSX) for collecting Project Locations metadata. Joined to GeoJS
 **Project Manager**
 
 KfW operations role (with PA) responsible for project location updates, including visual plausibility checks and ODP uploads.
-
----
-
-## PM/PA {#pmpa}
-
-**Project Manager/ Project Assistant**
-
-KfW operations roles that perform visual plausibility checks and upload validated data to ODP.
 
 ---
 
@@ -131,13 +107,5 @@ Global geographic coordinate system (EPSG:4326) required for GeoJSON export in t
 **Excel spreadsheet format**
 
 Microsoft Excel Open XML format. The PLM is provided and completed as an XLSX file.
-
----
-
-## ZDV {#zdv}
-
-**Zentrale Datenverarbeitung (Central Data Processing)**
-
-KfW unit hosting Team DAI, which maintains the online validator and ODP tools used in Validate, Visual check, Upload, and Create map steps.
 
 ---
