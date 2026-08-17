@@ -3,9 +3,9 @@
 # Step 1: Collect
 
 !!! overview
-    **Tool:** [Project Locations Model (PLM)](https://mapme-initiative.github.io/project_location_model/annex1.html) (v4 as of 01.07.2026)
+    **Tool:** [Project Location Model (PLM)](https://mapme-initiative.github.io/project_location_model/annex1.html) (v4 as of 01.07.2026)
 
-    **Performed by:** PIA/ external consultant
+    **Performed by:** PEA/ external consultant
 
     **Maintained by:** Geodata-Desk
 
@@ -15,24 +15,24 @@
 
 ## Purpose
 
-Collect project-level location metadata using the Project Location Model (PLM). Project Locations can be represented by different geometry types (i.e. points, lines, polygons). Regardless of geometry type, a single prepared file is uploaded to the online validator in the next step — the difference is in how the file is prepared, which depends on the Project Locations geometry. Outputs can be in Excel or GeoJSON format.
+Collect Project Location data using the Project Location Model (PLM) template. Project Locations can be represented by different geometry types (i.e. points, lines, polygons). Outputs can be in Excel or GeoJSON format.
 
 !!! note "Updating an existing collection?"
-    If your team already started collecting Project Locations with an **older version of the PLM and it is not yet uploaded onto the Open Data Platform (ODP)**, please read [Updating existing data](../updating-existing-data.md) first. Then return here for **Points-based** or **Geometry-based** instructions under Procedure.
+    If your team already started collecting Project Locations with an **older version of the PLM and it is not yet uploaded onto the Open Data Platform (ODP)**, please read [Updating existing data](../updating-existing-data.md) first. The version number is indicated in the filename. Then return here for **Points-based** or **Geometry-based** instructions under Procedure.
 
 ## Requirements
 
-- Access the latest version of the PLM (download via link under **Tool** in Overview)
-- For geometry-based locations: [QGIS](https://qgis.org/) installed
+- Access the latest version of the [Project Location Model (PLM) template](https://mapme-initiative.github.io/project_location_model/annex1.html) Please fill out one file per BMZ project number. Each file can contain multiple Project Locations associated with the single BMZ number.
+- For geometry-based locations: [QGIS](https://qgis.org/) installed on your KfW computer
 
 ## Procedure
 
 === "Points-based"
 
-    1. Download and open the PLM
+    1. Download and open the PLM (MS Excel template)
 
 
-    2. Fill in the project-level location metadata for all of the required columns (indicated in red).  Include values for both the **Latitude** and **Longitude** columns to specify point coordinates.
+    2. Fill in the project-level location metadata; all of the columns are mandatory.  Include values for both the **Latitude** and **Longitude** columns to specify point coordinates. Please refer to the example line in the file and pay attention to the pop-up instructions on how to fill each column correctly. Only correctly filled out templates will generate valid maps later on. 
 
 
     3. Save completed PLM (*.xlsx format)
@@ -43,7 +43,7 @@ Collect project-level location metadata using the Project Location Model (PLM). 
 
     For demonstration purposes, the examples below use the Frankfurt Botanical Garden (Unique ID value `1234567890`).
 
-    1. Download and open the PLM
+    1. Download and open the PLM (MS Excel template)
 
 
     2. Fill in the project-level location metadata with all of the columns, **excluding** the Latitude and Longitude columns.
@@ -51,7 +51,7 @@ Collect project-level location metadata using the Project Location Model (PLM). 
         ![PLM example with Unique ID](../assets/images/collect-qgis-plm-example.png)
 
 
-    3. Start a new QGIS project
+    3. Start a new QGIS project. If you are not yet unfamiliar with using QGIS, please reach out to a Geodata-Scout or the Geodata-Desk for further support.
 
         - Select the **New Project** icon, or choose **Project → New** in the menu bar.
         - Select the **Save** icon, or choose **Project → Save**, to create or save the project file.
