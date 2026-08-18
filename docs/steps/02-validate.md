@@ -1,5 +1,3 @@
---8<-- "includes/workflow-nav.md"
-
 # Step 2: Validate
 
 !!! overview
