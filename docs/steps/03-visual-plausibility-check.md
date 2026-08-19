@@ -5,9 +5,9 @@
 !!! overview
     **Tool:** [Online validator](https://mapme-initiative.github.io/project_location_model/project-location-validator/index.html)
 
-    **Performed by:** KfW operations (<span class="glossary-term" data-term="pmpa">PM/PA</span>)
+    **Performed by:** KfW sector teams (project managers/ project analysts)
 
-    **Maintained by:** <span class="glossary-term" data-term="zdv">ZDV</span> (<span class="glossary-term" data-term="dai">DAI</span>)
+    **Maintained by:** KfW Team Data Analytics & Artificial Intelligence (DAI)
 
     **Previous step:** [2 Validate](02-validate.md)
 
@@ -20,11 +20,11 @@ Visually verify that validated project locations appear correctly on the map bef
 ## Requirements
 
 - Validated <span class="glossary-term" data-term="geojson">GeoJSON</span> from [Step 2: Validate](02-validate.md)
-- Access to the [online validator](https://mapme-initiative.github.io/project_location_model/project-location-validator/index.html)
+- Use the [online validator](https://mapme-initiative.github.io/project_location_model/project-location-validator/index.html)
 
 ## Procedure
 
-1. Using the online validator, upload validated GeoJSON with the Upload File button and inspect the map view: confirm project locations are displayed in expected locations.
+1. Using the online validator, upload validated GeoJSON with the Upload File button and inspect the map view: confirm project locations are displayed in expected locations/ area.
 
 
 2. Check that multi-geometry features render correctly. If locations look implausible, return to [Collect](01-collect.md) to correct the data before re-validating.
@@ -42,4 +42,4 @@ Visually verify that validated project locations appear correctly on the map bef
 
 | Item | Format | Notes |
 |------|--------|-------|
-| Validated Project-level Locations (confirmed) | <span class="glossary-term" data-term="geojson">GeoJSON</span> | Ready for <span class="glossary-term" data-term="odp">ODP</span> upload |
+| Validated Project-level Locations (confirmed) | <span class="glossary-term" data-term="geojson">GeoJSON</span> | Ready for upload to KfW's internal Open Data Platform (ODP) |

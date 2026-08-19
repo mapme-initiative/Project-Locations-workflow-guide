@@ -1,16 +1,12 @@
---8<-- "includes/workflow-nav.md"
-
 # Step 1: Collect
 
 !!! overview
     **Tool:** [Project Location Model (PLM)](https://mapme-initiative.github.io/project_location_model/annex1.html) (v4 as of 01.07.2026)
-
-    **Performed by:** PEA/ external consultant
-
+    
+    **Performed by:** external consultants
+    
     **Maintained by:** Geodata-Desk
-
-    **Previous step:** —
-
+    
     **Next step:** [2 Validate](02-validate.md)
 
 ## Purpose
@@ -18,7 +14,7 @@
 Collect Project Location data using the Project Location Model (PLM) template. Project Locations can be represented by different geometry types (i.e. points, lines, polygons). Outputs can be in Excel or GeoJSON format.
 
 !!! note "Updating an existing collection?"
-    If your team already started collecting Project Locations with an **older version of the PLM and it is not yet uploaded onto the Open Data Platform (ODP)**, please read [Updating existing data](../updating-existing-data.md) first. The version number is indicated in the filename. Then return here for **Points-based** or **Geometry-based** instructions under Procedure.
+    If your team already started collecting Project Locations with an **older version of the PLM template**, please read [Updating existing data](../updating-existing-data.md) first. The version number is indicated in the filename. Then return here for **Points-based** or **Geometry-based** instructions under Procedure.
 
 ## Requirements
 

@@ -32,11 +32,11 @@ Click a step in the diagram below to access more detailed instructions. The over
 | # | Step | Tool | Performer | Maintainer |
 |---|------|------|-----------|------------|
 | 1 | [Collect](steps/01-collect.md) | Project Locations Model (PLM) | external consultants | KfW Geodata-Desk |
-| 2 | [Validate](steps/02-validate.md) | Online validator | external consultants | KfW Team Data Analytics & Intelligence (DAI) |
-| 3 | [Visual plausibility check](steps/03-visual-plausibility-check.md) | Online validator | KfW sector teams (project managers/ project analysts) | KfW Team Data Analytics & Intelligence (DAI) |
-| 4 | [Upload data](steps/04-upload-data.md) | KfW Open Data Platform (ODP) | KfW sector teams (project managers/ project analysts) | KfW Team Data Analytics & Intelligence (DAI) |
+| 2 | [Validate](steps/02-validate.md) | Online validator | external consultants | KfW Team Data Analytics & Artificial Intelligence (DAI) |
+| 3 | [Visual plausibility check](steps/03-visual-plausibility-check.md) | Online validator | KfW sector teams (project managers/ project analysts) | KfW Team Data Analytics & Artificial Intelligence (DAI) |
+| 4 | [Upload data](steps/04-upload-data.md) | KfW Open Data Platform (ODP) | KfW sector teams (project managers/ project analysts) | KfW Team Data Analytics & Artificial Intelligence (DAI) |
 | 5 | [Aggregate data](steps/05-aggregate-data.md) | Python script | KfW Geodata-Desk | KfW Geodata-Desk |
-| 6 | [Create map](steps/06-create-map.md) | KfW Open Data Platform (ODP) | KfW Geodata-Desk | KfW Team Data Analytics & Intelligence (DAI) |
+| 6 | [Create map](steps/06-create-map.md) | KfW Open Data Platform (ODP) | KfW Geodata-Desk | KfW Team Data Analytics & Artificial Intelligence (DAI) |
 
 ---
 

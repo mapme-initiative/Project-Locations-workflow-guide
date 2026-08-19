@@ -1,5 +1,3 @@
---8<-- "includes/workflow-nav.md"
-
 # Step 2: Validate
 
 !!! overview
@@ -7,7 +5,7 @@
 
     **Performed by:** external consultants
 
-    **Maintained by:** KfW Team Data Analytics & Intelligence (DAI)
+    **Maintained by:** KfW Team Data Analytics & Artificial Intelligence (DAI)
 
     **Previous step:** [1 Collect](01-collect.md)
 
