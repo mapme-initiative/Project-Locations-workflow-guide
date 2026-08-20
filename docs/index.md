@@ -12,7 +12,10 @@ Welcome to the guide for collecting and updating **Project Locations** at KfW. T
 
 In order to check the Project Locations Model (PLM) Excel version number, refer to the template file number. Here is an example:
 
-<img src="../../assets/images/overview-template-version.png" class="instruction-figure instruction-figure--90" />
+<img
+  src="assets/images/overview-template-version.png"
+  class="instruction-figure instruction-figure--90"
+/>
 
 ---
 
