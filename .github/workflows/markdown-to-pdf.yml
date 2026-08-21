@@ -39,6 +39,19 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         run: mkdocs build --site-dir _site
 
+      - name: Extract site_url from mkdocs.yml
+        if: steps.changed-files.outputs.any_changed == 'true'
+        id: site-url
+        run: |
+          # Used to rewrite internal links from the ephemeral local build
+          # server to the real published domain, so links in the archived
+          # PDF still work after this CI job (and its localhost) are gone.
+          SITE_URL=$(grep -m1 '^site_url:' mkdocs.yml | cut -d ':' -f2- | xargs || true)
+          if [ -z "$SITE_URL" ]; then
+            echo "::warning::No site_url found in mkdocs.yml — internal links in the PDF will point to the ephemeral local build server and will not work once this job finishes."
+          fi
+          echo "url=$SITE_URL" >> "$GITHUB_OUTPUT"
+
       - name: Serve the built site locally
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
@@ -152,8 +165,56 @@ jobs:
             });
           }
 
+          async function rewriteLinks(page, siteUrl, localBase) {
+            // Internal links currently point at our ephemeral local build
+            // server (e.g. http://localhost:8000/...). Rewrite them to the
+            // real published domain so they stay clickable/valid in the
+            // archived PDF after this job (and its localhost) are gone.
+            if (!siteUrl) return;
+            await page.evaluate(
+              ({ siteUrl, localBase }) => {
+                const base = siteUrl.replace(/\/$/, '');
+                document.querySelectorAll('a[href]').forEach((a) => {
+                  if (a.href.startsWith(localBase)) {
+                    a.href = base + a.href.slice(localBase.length);
+                  }
+                });
+              },
+              { siteUrl, localBase }
+            );
+          }
+
+          async function styleLinks(page, siteUrl, localBase) {
+            // Make links visually obvious as clickable (distinct colour +
+            // underline), and mark truly external links (validator, Open
+            // Data Platform, etc.) with a small arrow so it's clear they
+            // leave the current document/site.
+            const homeOrigin = (siteUrl || localBase).replace(/\/$/, '');
+            await page.evaluate((homeOrigin) => {
+              document.querySelectorAll('a[href]').forEach((a) => {
+                a.style.color = '#0969da';
+                a.style.textDecoration = 'underline';
+                a.style.fontWeight = '500';
+                let isExternal = false;
+                try {
+                  isExternal = new URL(a.href, homeOrigin).origin !== new URL(homeOrigin).origin;
+                } catch (e) {
+                  isExternal = false;
+                }
+                if (isExternal && !a.dataset.pdfMarked) {
+                  a.dataset.pdfMarked = '1';
+                  const marker = document.createElement('span');
+                  marker.textContent = ' \u2197'; // ↗
+                  marker.style.fontWeight = '700';
+                  a.appendChild(marker);
+                }
+              });
+            }, homeOrigin);
+          }
+
           async function main() {
-            const [, , url, outPath, headerText] = process.argv;
+            const [, , url, outPath, headerText, siteUrl] = process.argv;
+            const localBase = 'http://localhost:8000';
             const browser = await chromium.launch();
             const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
             await page.goto(url, { waitUntil: 'networkidle' });
@@ -163,6 +224,8 @@ jobs:
             await autoScroll(page);
             await forceLoadImages(page);
             await expandTabs(page);
+            await rewriteLinks(page, siteUrl, localBase);
+            await styleLinks(page, siteUrl, localBase);
             await page.waitForTimeout(500);
 
             // Safety net: force-disable animations/transitions and neutralise
@@ -241,7 +304,7 @@ jobs:
             output_pdf="$ROOT_DIR/pdf-versions/${filename_no_ext}_${FILE_TIME}.pdf"
 
             echo "  -> $page_url"
-            node "$ROOT_DIR/print-to-pdf.js" "$page_url" "$output_pdf" "$HEADER_TIME"
+            node "$ROOT_DIR/print-to-pdf.js" "$page_url" "$output_pdf" "$HEADER_TIME" "${{ steps.site-url.outputs.url }}"
           done
 
       - name: Commit and Push PDFs Back to Repository
