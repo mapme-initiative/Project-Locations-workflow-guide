@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 720 1112" role="img" aria-label="Project Locations management workflow">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="112%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000000" flood-opacity="0.08"/>
+    </filter>
+
+    <pattern id="fill-stripes" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+      <rect width="10" height="10" fill="#f8fafc"/>
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#cbd5e1" stroke-width="2.5"/>
+    </pattern>
+
+    <pattern id="fill-dots" width="12" height="12" patternUnits="userSpaceOnUse">
+      <rect width="12" height="12" fill="#f8fafc"/>
+      <circle cx="6" cy="6" r="1.4" fill="#94a3b8"/>
+    </pattern>
+
+    <style>
+      .step-link { cursor: pointer; }
+      .step-link:hover .step-frame { filter: url(#shadow); }
+      .step-frame { stroke-width: 4; }
+      .step-title {
+        font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        fill: #0E2841;
+        text-anchor: middle;
+        pointer-events: none;
+      }
+      .step-num {
+        font-family: "Segoe UI", system-ui, Arial, sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        fill: #475569;
+        text-anchor: middle;
+        pointer-events: none;
+      }
+      .step-scrim {
+        fill: rgba(255, 255, 255, 0.88);
+        pointer-events: none;
+      }
+      .flow-line {
+        stroke: #000000;
+        stroke-width: 3;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: miter;
+      }
+      .artifact {
+        font-family: "Segoe UI", system-ui, Arial, sans-serif;
+        font-size: 12px;
+        fill: #475569;
+        text-anchor: start;
+        font-style: italic;
+      }
+      .artifact-final {
+        font-family: "Segoe UI", system-ui, Arial, sans-serif;
+        font-size: 12px;
+        fill: #475569;
+        text-anchor: middle;
+        font-style: italic;
+      }
+      .heading {
+        font-family: "Segoe UI", system-ui, Arial, sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        fill: #0E2841;
+        text-anchor: middle;
+      }
+      .legend-heading {
+        font-family: "Segoe UI", system-ui, Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        fill: #0E2841;
+      }
+      .legend-label {
+        font-family: "Segoe UI", system-ui, Arial, sans-serif;
+        font-size: 11.5px;
+        fill: #334155;
+      }
+      .legend-row-title {
+        font-family: "Segoe UI", system-ui, Arial, sans-serif;
+        font-size: 11px;
+        font-weight: 600;
+        fill: #475569;
+      }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="720" height="1112" fill="#f8fafc"/>
+
+  <!-- Layout: bypass at x=28, steps at x=210, flow axis x=390, labels at x=418 -->
+  <text x="390" y="42" class="heading workflow-diagram-title">Project Locations management workflow</text>
+
+  <a data-step="1" xlink:href="steps/01-collect/" xlink:title="Step 1: Collect">
+    <g class="step-frame" transform="translate(210, 84)">
+      <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
+      <rect width="360" height="58" rx="10" fill="url(#fill-stripes)" stroke="#A02B93"/>
+      <rect class="step-scrim" x="141" y="22" width="78" height="20" rx="3"/>
+      <text class="step-num" x="28" y="34">1</text>
+      <text class="step-title" x="180" y="36">COLLECT</text>
+    </g>
+  </a>
+  <line class="flow-line" x1="390" y1="157" x2="390" y2="209"/>
+  <text class="artifact" x="418" y="186">Excel / GeoJSON</text>
+
+  <a data-step="2" xlink:href="steps/02-validate/" xlink:title="Step 2: Validate">
+    <g class="step-frame" transform="translate(210, 230)">
+      <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
+      <rect width="360" height="58" rx="10" fill="url(#fill-dots)" stroke="#A02B93"/>
+      <rect class="step-scrim" x="137" y="22" width="86" height="20" rx="3"/>
+      <text class="step-num" x="28" y="34">2</text>
+      <text class="step-title" x="180" y="36">VALIDATE</text>
+    </g>
+  </a>
+  <line class="flow-line" x1="390" y1="303" x2="390" y2="355"/>
+  <text class="artifact" x="418" y="332">GeoJSON</text>
+
+  <a data-step="3" xlink:href="steps/03-visual-plausibility-check/" xlink:title="Step 3: Visual plausibility check">
+    <g class="step-frame" transform="translate(210, 376)">
+      <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
+      <rect width="360" height="58" rx="10" fill="url(#fill-dots)" stroke="#00B050"/>
+      <rect class="step-scrim" x="61" y="22" width="238" height="20" rx="3"/>
+      <text class="step-num" x="28" y="34">3</text>
+      <text class="step-title" x="180" y="36">VISUAL PLAUSIBILITY CHECK</text>
+    </g>
+  </a>
+  <line class="flow-line" x1="390" y1="449" x2="390" y2="501"/>
+  <text class="artifact" x="418" y="478">Validated GeoJSON</text>
+
+  <a data-step="4" xlink:href="steps/04-upload-data/" xlink:title="Step 4: Upload data">
+    <g class="step-frame" transform="translate(210, 522)">
+      <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
+      <rect width="360" height="58" rx="10" fill="url(#fill-dots)" stroke="#00B050"/>
+      <rect class="step-scrim" x="124" y="22" width="112" height="20" rx="3"/>
+      <text class="step-num" x="28" y="34">4</text>
+      <text class="step-title" x="180" y="36">UPLOAD DATA</text>
+    </g>
+  </a>
+  <!-- Bypass: Step 4 → Step 6 at box centres; 15px gap before boxes (matches main flow) -->
+  <polyline class="flow-line" points="195,551 28,551 28,843 195,843"/>
+  <text class="artifact" x="56" y="690">
+    <tspan x="56" dy="0">Project-level</tspan>
+    <tspan x="56" dy="14">locations</tspan>
+  </text>
+  <line class="flow-line" x1="390" y1="595" x2="390" y2="647"/>
+  <text class="artifact" x="418" y="624">ODP data resource</text>
+
+  <a data-step="5" xlink:href="steps/05-aggregate-data/" xlink:title="Step 5: Aggregate data">
+    <g class="step-frame" transform="translate(210, 668)">
+      <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
+      <rect width="360" height="58" rx="10" fill="url(#fill-stripes)" stroke="#0070C0"/>
+      <rect class="step-scrim" x="107" y="22" width="146" height="20" rx="3"/>
+      <text class="step-num" x="28" y="34">5</text>
+      <text class="step-title" x="180" y="36">AGGREGATE DATA</text>
+    </g>
+  </a>
+  <line class="flow-line" x1="390" y1="741" x2="390" y2="793"/>
+  <text class="artifact" x="418" y="763">
+    <tspan x="418" dy="0">Departmental-level</tspan>
+    <tspan x="418" dy="14">locations</tspan>
+  </text>
+
+  <a data-step="6" xlink:href="steps/06-create-map/" xlink:title="Step 6: Create map">
+    <g class="step-frame" transform="translate(210, 814)">
+      <rect width="360" height="58" rx="10" fill="#ffffff" stroke="none"/>
+      <rect width="360" height="58" rx="10" fill="url(#fill-dots)" stroke="#0070C0"/>
+      <rect class="step-scrim" x="128" y="22" width="104" height="20" rx="3"/>
+      <text class="step-num" x="28" y="34">6</text>
+      <text class="step-title" x="180" y="36">CREATE MAP</text>
+    </g>
+  </a>
+  <text class="artifact-final" x="390" y="907">
+    <tspan x="390" dy="0">Project Locations/</tspan>
+    <tspan x="390" dy="14">Portfolio map</tspan>
+  </text>
+
+  <!-- Legend -->
+  <g class="workflow-legend">
+  <rect x="32" y="944" width="656" height="162" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" rx="12"/>
+
+  <text x="52" y="970" class="legend-heading">Legend</text>
+
+  <text x="52" y="994" class="legend-row-title">Performs workflow step</text>
+  <!-- Row 1: swatch at 52, 236, 420 — text begins at 96, 280, 464 in both rows -->
+  <g transform="translate(52, 1004)">
+    <rect width="34" height="22" rx="4" fill="#ffffff" stroke="#A02B93" stroke-width="4"/>
+    <text x="44" y="16" class="legend-label">PIA</text>
+  </g>
+  <g transform="translate(236, 1004)">
+    <rect width="34" height="22" rx="4" fill="#ffffff" stroke="#0070C0" stroke-width="4"/>
+    <text x="44" y="16" class="legend-label">IDV Geodata-Desk</text>
+  </g>
+  <g transform="translate(420, 1004)">
+    <rect width="34" height="22" rx="4" fill="#ffffff" stroke="#00B050" stroke-width="4"/>
+    <text x="44" y="16" class="legend-label">KfW operations (PM/PA)</text>
+  </g>
+
+  <text x="52" y="1062" class="legend-row-title">Maintains tool/ model required to execute workflow step</text>
+  <g transform="translate(52, 1072)">
+    <rect width="34" height="22" rx="4" fill="url(#fill-stripes)" stroke="#64748b" stroke-width="1"/>
+    <text x="44" y="16" class="legend-label">IDV Geodata-Desk</text>
+  </g>
+  <g transform="translate(236, 1072)">
+    <rect width="34" height="22" rx="4" fill="url(#fill-dots)" stroke="#64748b" stroke-width="1"/>
+    <text x="44" y="16" class="legend-label">ZDV DAI</text>
+  </g>
+  </g>
+</svg>

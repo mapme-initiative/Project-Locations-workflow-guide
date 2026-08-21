@@ -1,0 +1,103 @@
+/* Glossary terms: plain text until hover/focus */
+.glossary-term {
+  color: var(--md-default-fg-color);
+  font-weight: inherit;
+  text-decoration: none;
+  cursor: help;
+  border-bottom: none;
+}
+
+.glossary-term:hover,
+.glossary-term:focus,
+.glossary-term.glossary-term--active {
+  color: var(--md-accent-fg-color);
+  outline: none;
+}
+
+a .glossary-term {
+  color: var(--md-default-fg-color);
+  text-decoration: none;
+  font-weight: inherit;
+}
+
+a:hover .glossary-term,
+a:focus .glossary-term,
+.glossary-term:hover,
+.glossary-term:focus,
+.glossary-term.glossary-term--active {
+  color: var(--md-accent-fg-color);
+}
+
+.glossary-popover[hidden] {
+  display: none !important;
+}
+
+.glossary-popover {
+  position: absolute;
+  z-index: 200;
+  width: min(20rem, calc(100vw - 1.5rem));
+  padding: 1rem 1.15rem 0.85rem;
+  border-radius: 8px;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.glossary-popover__close {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.45rem;
+  border: none;
+  background: transparent;
+  color: var(--md-default-fg-color);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.glossary-popover__close:hover,
+.glossary-popover__close:focus {
+  background: var(--md-code-bg-color);
+  color: var(--md-accent-fg-color);
+  outline: none;
+}
+
+.glossary-popover__label {
+  margin: 0 0 0.25rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--md-default-fg-color--light);
+}
+
+.glossary-popover__title {
+  margin: 0 0 0.15rem;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.glossary-popover__name {
+  margin: 0 0 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color);
+}
+
+.glossary-popover__definition {
+  margin: 0 0 0.65rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.glossary-popover__link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--md-accent-fg-color);
+}
+
+.glossary-popover__link:hover {
+  color: var(--md-primary-fg-color);
+}

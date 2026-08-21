@@ -1,0 +1,139 @@
+/* KfW-inspired accents aligned with workflow.yaml legend colours */
+:root {
+  --md-primary-fg-color: #0E2841;
+  --md-accent-fg-color: #0070C0;
+}
+
+.workflow-overview {
+  margin: 1.5rem 0;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  background: var(--md-default-bg-color);
+}
+
+.workflow-overview__diagram {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.workflow-overview__svg {
+  display: block;
+  width: 80%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.workflow-overview object {
+  display: block;
+  margin: 0 auto;
+}
+
+.workflow-overview--mini {
+  margin: 1rem 0 1.25rem;
+  padding: 0.75rem;
+}
+
+.workflow-overview-caption {
+  margin: 0 0 0.5rem !important;
+  padding: 0 !important;
+  border: none !important;
+  background: none !important;
+  font-size: 0.8rem !important;
+  color: var(--md-default-fg-color--light);
+  text-align: center;
+}
+
+.workflow-diagram__error {
+  font-size: 0.75rem;
+  color: var(--md-default-fg-color--light);
+  text-align: center;
+}
+
+/* Step nav bar at top of each page */
+.workflow-nav-bar {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1.25em;
+  background: var(--md-code-bg-color);
+  border-radius: 4px;
+  border-left: 3px solid var(--md-accent-fg-color);
+}
+
+.workflow-nav-bar > p {
+  margin: 0;
+}
+
+/* Step Overview admonition: match instruction text size (slightly smaller) */
+.md-typeset .admonition.overview {
+  font-size: calc(var(--md-typeset-font-size, 1em) - 0.5px);
+}
+
+.md-typeset .admonition.overview > .admonition-title {
+  font-size: calc(var(--md-typeset-font-size, 1em) - 0.5px);
+  margin-bottom: 0.35em;
+}
+
+.md-typeset .admonition.overview > p:not(.admonition-title),
+.md-typeset .admonition.overview .admonition-content > p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Numbered instructions: spacing between steps and screenshots */
+.md-typeset ol:not(.task-list) > li {
+  margin-bottom: 2em;
+}
+
+.md-typeset ol:not(.task-list) > li > p {
+  margin-bottom: 0.5em;
+}
+
+.md-typeset ol:not(.task-list) > li > p:last-child,
+.md-typeset ol:not(.task-list) > li > ul:last-child {
+  margin-bottom: 0;
+}
+
+/* Instruction figures: left-aligned with step text */
+.md-typeset ol:not(.task-list) img,
+.md-typeset .tabbed-set img,
+.md-typeset .tabbed-block img,
+.md-typeset p > img,
+.md-typeset img.instruction-figure {
+  display: block;
+  width: 80%;
+  max-width: 80%;
+  height: auto;
+  margin: 1.25em 0 2em;
+}
+
+.md-typeset img.instruction-figure--70,
+.md-typeset img[src*="collect-qgis-scratch-layer"] {
+  width: 70% !important;
+  max-width: 70% !important;
+}
+
+.md-typeset img.instruction-figure--60 {
+  width: 60% !important;
+  max-width: 60% !important;
+}
+
+.md-typeset img.instruction-figure--50 {
+  width: 50% !important;
+  max-width: 50% !important;
+}
+
+/* Small UI captures (menus, dialogs) — keep near native size to avoid blurry upscaling */
+.md-typeset img.instruction-figure--small {
+  width: auto !important;
+  max-width: 11rem;
+}
+
+/* Hide default Material for MkDocs footer (empty after copyright override) */
+.md-footer {
+  display: none;
+}

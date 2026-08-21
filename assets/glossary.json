@@ -1,0 +1,110 @@
+{
+  "crs": {
+    "id": "crs",
+    "abbr": "CRS",
+    "name": "Coordinate Reference System",
+    "definition": "A coordinate-based system for representing locations on Earth. GeoJSON in this workflow must use EPSG:4326 (WGS 84).\n"
+  },
+  "dai": {
+    "id": "dai",
+    "abbr": "DAI",
+    "name": "Team DAI (within ZDV)",
+    "definition": "Team within ZDV (Central Data Processing) that develops and maintains the online validator and Open Data Platform components used in this workflow.\n"
+  },
+  "epsg4326": {
+    "id": "epsg4326",
+    "abbr": "EPSG:4326",
+    "name": "WGS 84 geographic coordinate system",
+    "definition": "Standard geographic coordinate reference system (longitude/latitude in decimal degrees). Required CRS when exporting GeoJSON geometries in QGIS for this workflow.\n"
+  },
+  "idv": {
+    "id": "idv",
+    "abbr": "Geodata-Desk",
+    "name": "Geodata-Desk",
+    "definition": "KfW Geodata-Desk team. Maintains the PLM, performs aggregation and map creation, and supports geometry-based data preparation.\n"
+  },
+  "geojson": {
+    "id": "geojson",
+    "abbr": "GeoJSON",
+    "name": "Geographic JSON",
+    "definition": "Open standard file format for encoding geographic features and their properties. Used throughout the workflow for validated project locations and ODP uploads.\n"
+  },
+  "gis": {
+    "id": "gis",
+    "abbr": "GIS",
+    "name": "Geographic Information System",
+    "definition": "Software for creating, editing, and analysing spatial data. QGIS is used in the Collect step to draw polygon and line geometries.\n"
+  },
+  "kfw": {
+    "id": "kfw",
+    "abbr": "KfW",
+    "name": "Kreditanstalt für Wiederaufbau",
+    "definition": "German development bank. KfW operations staff (PM/PA) perform visual checks and ODP uploads within this workflow.\n"
+  },
+  "mapme": {
+    "id": "mapme",
+    "abbr": "MapMe",
+    "name": "MapMe initiative",
+    "definition": "Initiative providing the Project Locations Model specification, PLM templates, and the browser-based online validator.\n"
+  },
+  "odp": {
+    "id": "odp",
+    "abbr": "ODP",
+    "name": "Open Data Platform",
+    "definition": "KfW platform for publishing geospatial data resources and portfolio maps. Validated GeoJSON is uploaded here before aggregation and map creation.\n"
+  },
+  "pa": {
+    "id": "pa",
+    "abbr": "PA",
+    "name": "Project Assistant",
+    "definition": "KfW operations role (with PM) responsible for updating project locations, including visual plausibility checks and ODP uploads.\n"
+  },
+  "pia": {
+    "id": "pia",
+    "abbr": "PIA",
+    "name": "PIA / external consultant",
+    "definition": "External consultant who performs the Collect and Validate steps using the PLM and online validator.\n"
+  },
+  "plm": {
+    "id": "plm",
+    "abbr": "PLM",
+    "name": "Project Locations Model",
+    "definition": "Excel template (XLSX) for collecting project location metadata. Joined to GeoJSON geometry files for multi-geometry locations or completed with latitude/longitude columns for point locations.\n"
+  },
+  "pm": {
+    "id": "pm",
+    "abbr": "PM",
+    "name": "Project Manager",
+    "definition": "KfW operations role (with PA) responsible for project location updates, including visual plausibility checks and ODP uploads.\n"
+  },
+  "pmpa": {
+    "id": "pmpa",
+    "abbr": "PM/PA",
+    "name": "Project Manager / Project Assistant",
+    "definition": "KfW operations roles that perform visual plausibility checks and upload validated data to ODP.\n"
+  },
+  "qgis": {
+    "id": "qgis",
+    "abbr": "QGIS",
+    "name": "QGIS",
+    "definition": "Free, open-source GIS desktop application used to create and export GeoJSON geometries for lines and polygons in the Collect step.\n"
+  },
+  "wgs84": {
+    "id": "wgs84",
+    "abbr": "WGS 84",
+    "name": "World Geodetic System 1984",
+    "definition": "Global geographic coordinate system (EPSG:4326) required for GeoJSON export in this workflow.\n"
+  },
+  "xlsx": {
+    "id": "xlsx",
+    "abbr": "XLSX",
+    "name": "Excel spreadsheet",
+    "definition": "Microsoft Excel Open XML format. The PLM is provided and completed as an XLSX file.\n"
+  },
+  "zdv": {
+    "id": "zdv",
+    "abbr": "ZDV",
+    "name": "Zentrale Datenverarbeitung (Central Data Processing)",
+    "definition": "KfW unit hosting Team DAI, which maintains the online validator and ODP tools used in Validate, Visual check, Upload, and Create map steps.\n"
+  }
+}
